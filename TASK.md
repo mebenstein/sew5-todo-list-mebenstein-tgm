@@ -35,3 +35,26 @@ Das Testen und Deployment soll mittels einem Continous-Integration Tool durchgef
 * [Vue.js Guide](https://vuejs.org/v2/guide/)
 * [Cypress.io](https://www.cypress.io/)
 
+## Grundkompetenzen
+* ToDo-Listen erstellen, anzeigen, bearbeiten und löschen
+* ToDos erstellen, anzeigen, bearbeiten und löschen
+* ToDo-Listen sollen zur Bearbeitung gesperrt bzw. freigegeben werden können
+* API-Token Authentitfikation zur Freigabe der REST-Schnittstelle
+* Alle Elemente (ToDo-Listen, ToDos) müssen nach Beendigung des Backends
+persistiert werden
+* Design- und Funktionsbeschreibung sowie Framework-Analyse im README.md
+
+## Erweiterte Kompetenzen
+* Deployment des Backends auf einem Produktivserver mit konfigurierbarem
+IP/DNS-Eintrag
+* Authentifikation der Benutzeroberfläche
+* Initialisierung einer automatisierten Testumgebung
+* Deployment des Frontends und Überprüfung der Backend Verfügbarkeit mit
+entsprechenden Fehlermeldungen
+
+Bei den Tests müssen eine ausreichende Anzahl an Fällen für die
+Abdeckung gültiger sowie ungültiger Äquivalenzklassen aller funktionalen
+Anforderungen implementiert werden. Diese müssen für das Backend
+(Pytest) als auch für das Frontend (Cypress.io) als Regressionstests
+automatisch ausgeführt und mit kontinuierlichen Reports (Cases/Coverage)
+dokumentiert werden.
