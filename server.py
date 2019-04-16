@@ -20,9 +20,6 @@ class ToDoObject(db.Model):
         self.title = title
         self.parent_id = parent
 
-    def setLocked(self,state):
-        self.locked = state
-
 class ToDoEncoder(json.JSONEncoder):
         def default(self, o):
             return {"id":o.id,"title":o.title,"locked":o.locked,'children':o.children}
@@ -30,9 +27,12 @@ class ToDoEncoder(json.JSONEncoder):
 db.create_all()
 db.session.commit()
 
-@app.route("/add")
+@app.route("/add",methods=["POST"])
 def addTodo():
     obj = json.loads(request.data)
+
+    if obj.get("title") == None:
+        return ("Title required",403)
     
     todo = ToDoObject(obj["title"],obj.get("parent"))
 
@@ -41,7 +41,7 @@ def addTodo():
 
     return (str(todo.id),200)
 
-@app.route("/get")
+@app.route("/get",methods=["GET"])
 def getTodo():
     return (json.dumps(
         ToDoObject.query
@@ -50,7 +50,7 @@ def getTodo():
             ,cls=ToDoEncoder)
         ,200)
 
-@app.route("/set/<int:id>")
+@app.route("/set/<int:id>",methods=["POST"])
 def setTodo(id=None):
     obj = json.loads(request.data)
     todo = ToDoObject.query.get(id)
@@ -71,7 +71,7 @@ def setTodo(id=None):
     return (json.dumps(todo,cls=ToDoEncoder),200)
 
 
-@app.route("/del/<int:id>")
+@app.route("/del/<int:id>",methods=["POST"])
 def delTodo(id=None):
     todo = ToDoObject.query.get(id)
 
