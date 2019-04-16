@@ -50,11 +50,13 @@ def getTodo():
             ,cls=ToDoEncoder)
         ,200)
 
-@app.route("/set/<id>")
+@app.route("/set/<int:id>")
 def setTodo(id=None):
     obj = json.loads(request.data)
-
     todo = ToDoObject.query.get(id)
+    
+    if todo == None:
+        return ("Todo does not exist",404)
 
     if not todo.locked:
         for key,val in obj.items():
@@ -67,6 +69,19 @@ def setTodo(id=None):
     db.session.commit()
 
     return (json.dumps(todo,cls=ToDoEncoder),200)
+
+
+@app.route("/del/<int:id>")
+def delTodo(id=None):
+    todo = ToDoObject.query.get(id)
+
+    if todo.locked:
+        return ("Cant delete locked todo",403)
+
+    db.session.delete(todo)
+    db.session.commit()
+
+    return ("deleted "+str(id),200)
 
 if __name__ == "__main__":
     app.run(port=9000)
