@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 class ToDoObject(db.Model):
     __tablename__ = "todos"
     id = db.Column(db.Integer, primary_key=True)
-    locked = False
+    locked = db.Column(db.Boolean,default=False)
     title = db.Column(db.String(80),nullable=False)
     parent_id = db.Column(db.Integer,db.ForeignKey('todos.id'))
     children = db.relationship('ToDoObject', backref=db.backref('parent',remote_side=[id]))
@@ -39,7 +39,7 @@ def addTodo():
     db.session.add(todo)
     db.session.commit()
 
-    return (str(todo.id),0)
+    return (str(todo.id),200)
 
 @app.route("/get")
 def getTodo():
@@ -48,7 +48,25 @@ def getTodo():
             .filter(ToDoObject.parent_id == None)
             .all()
             ,cls=ToDoEncoder)
-        ,0)
+        ,200)
+
+@app.route("/set/<id>")
+def setTodo(id=None):
+    obj = json.loads(request.data)
+
+    todo = ToDoObject.query.get(id)
+
+    if not todo.locked:
+        for key,val in obj.items():
+            setattr(todo,key,val)
+    elif obj.get("locked") != None:
+        todo.locked = obj["locked"]
+    else:
+        return ("Cant write on locked todo",403)
+
+    db.session.commit()
+
+    return (json.dumps(todo,cls=ToDoEncoder),200)
 
 if __name__ == "__main__":
     app.run(port=9000)
