@@ -1,1 +1,7 @@
 *.db
+.tox
+.pytest_cache
+_pycache_
+*cpython*
+htmlcov
+.coverage
