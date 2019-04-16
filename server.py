@@ -23,6 +23,10 @@ class ToDoObject(db.Model):
     def setLocked(self,state):
         self.locked = state
 
+class ToDoEncoder(json.JSONEncoder):
+        def default(self, o):
+            return {"id":o.id,"title":o.title,"locked":o.locked,'children':o.children}
+
 db.create_all()
 db.session.commit()
 
@@ -36,6 +40,15 @@ def addTodo():
     db.session.commit()
 
     return (str(todo.id),0)
+
+@app.route("/get")
+def getTodo():
+    return (json.dumps(
+        ToDoObject.query
+            .filter(ToDoObject.parent_id == None)
+            .all()
+            ,cls=ToDoEncoder)
+        ,0)
 
 if __name__ == "__main__":
     app.run(port=9000)
