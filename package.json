@@ -1,0 +1,27 @@
+{
+  "name": "sew5-todo-list-mebenstein-tgm",
+  "version": "1.0.0",
+  "description": "Die detaillierte [Aufgabenstellung](TASK.md) beschreibt die notwendigen Schritte zur Realisierung.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TGM-HIT/sew5-todo-list-mebenstein-tgm.git"
+  },
+  "author": "Michael Ebenstein",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TGM-HIT/sew5-todo-list-mebenstein-tgm/issues"
+  },
+  "homepage": "https://github.com/TGM-HIT/sew5-todo-list-mebenstein-tgm#readme",
+  "devDependencies": {
+    "vue": "^2.6.10"
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "bootstrap-vue": "^2.0.0-rc.18",
+    "postcss-loader": "^3.0.0"
+  }
+}
