@@ -14,7 +14,7 @@ class ToDoObject(db.Model):
     locked = db.Column(db.Boolean,default=False)
     title = db.Column(db.String(80),nullable=False)
     parent_id = db.Column(db.Integer,db.ForeignKey('todos.id'))
-    children = db.relationship('ToDoObject', backref=db.backref('parent',remote_side=[id]))
+    children = db.relationship('ToDoObject',cascade="all,delete", backref=db.backref('parent',remote_side=[id]))
 
     def __init__(self,title,parent=None):
         self.title = title
@@ -26,6 +26,13 @@ class ToDoEncoder(json.JSONEncoder):
 
 db.create_all()
 db.session.commit()
+
+def parent_locked(todo):
+    parent_lock = False
+    if todo.parent_id != None:
+        parent_lock = ToDoObject.query.get(todo.parent_id).locked
+
+    return parent_lock
 
 @app.route("/add",methods=["POST"])
 def addTodo():
@@ -58,7 +65,8 @@ def setTodo(id=None):
     if todo == None:
         return ("Todo does not exist",404)
 
-    if not todo.locked:
+
+    if not todo.locked and not parent_locked(todo):
         for key,val in obj.items():
             setattr(todo,key,val)
     elif obj.get("locked") != None:
@@ -75,7 +83,7 @@ def setTodo(id=None):
 def delTodo(id=None):
     todo = ToDoObject.query.get(id)
 
-    if todo.locked:
+    if todo.locked and not parent_locked(todo):
         return ("Cant delete locked todo",403)
 
     db.session.delete(todo)
