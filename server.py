@@ -1,12 +1,14 @@
 from flask import Flask,request
 from flask_sqlalchemy import SQLAlchemy
 import json
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todos.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-#app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
+
+CORS(app)
 
 class ToDoObject(db.Model):
     __tablename__ = "todos"
