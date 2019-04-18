@@ -2,7 +2,7 @@ sudo: false
 python:
     - "3.6"
 node_js:
-    - 10   
+    - 8.12
 install:
   - npm install
   - npm ci
