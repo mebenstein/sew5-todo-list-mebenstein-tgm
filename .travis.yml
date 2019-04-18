@@ -1,32 +1,31 @@
-matrix:
-  include:
-    - language: python
-      sudo: false
+sudo: false
       python:
           - "3.6"
-      node_js: "0.10"
-      install: "npm install"
-      install: pip install tox-travis
+      node_js:
+          - 10   
+      install:
+        - npm ci
+        - npm install
+        - pip install tox-travis
+      cache:
+      # Caches $HOME/.npm when npm ci is default script command
+      # Caches node_modules in all other cases
+      npm: true
+      directories:
+        # we also need to cache folder with Cypress binary
+        - ~/.cache
+
+jobs:
+  include:
+    - stage: vue build
       script: 
         - cd frontend
         - npm run build
         - cd ../
-        - tox
-    - language: node_js
-      node_js:
-        - 10
-      cache:
-        # Caches $HOME/.npm when npm ci is default script command
-        # Caches node_modules in all other cases
-        npm: true
-        directories:
-          # we also need to cache folder with Cypress binary
-          - ~/.cache
-      install:
-        - npm ci
+    - stage: test backend
       script:
-        - cd frontend
-        - npm run build
-        - cd ../
+        - tox
+    - stage: test frontend
+      script:
         - python server.py &
         - $(npm bin)/cypress run 
