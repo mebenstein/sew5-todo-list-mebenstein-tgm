@@ -3,16 +3,16 @@
     <div style="white-space: nowrap;">
       <h1  @input="updateTitle" class="sameline" :contenteditable="todo.locked||master_lock?false:true">{{ todo.title }}</h1>
       <div class="sameline" @click="togglLockstate">
-        <img :src="todo.locked||master_lock?'https://image.flaticon.com/icons/svg/26/26053.svg':'https://cdn0.iconfinder.com/data/icons/tools-66/24/unlock-512.png'" width="20" >
+        <img alt="lock" :src="todo.locked||master_lock?'https://image.flaticon.com/icons/svg/26/26053.svg':'https://cdn0.iconfinder.com/data/icons/tools-66/24/unlock-512.png'" width="20" >
       </div>
       <div class="sameline" @click="del">
-        <img src="https://cdn4.iconfinder.com/data/icons/email-2-2/32/Trash-Email-Bin-512.png" width="20">
+        <img alt="delete" src="https://cdn4.iconfinder.com/data/icons/email-2-2/32/Trash-Email-Bin-512.png" width="20">
       </div>
     </div>
     <li>
       <ul v-for="o in todo.children" v-bind:key="o"><Todo :todo="o" :parent_container="todo.children" :master_lock="todo.locked"/></ul>
     </li>
-    <div  @click="add" class="todo" style="text-align:center">
+    <div class="add todo"  @click="add" style="text-align:center">
         <b>+</b>
     </div>
   </div>

@@ -1,4 +1,6 @@
 pytest>=3
 flask
 flask-sqlalchemy
+flask_cors
+flask_httpauth
 coverage

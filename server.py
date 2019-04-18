@@ -1,14 +1,20 @@
-from flask import Flask,request
+from flask import Flask,request,render_template, g
 from flask_sqlalchemy import SQLAlchemy
 import json
 from flask_cors import CORS
+from flask_httpauth import HTTPTokenAuth
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder="./frontend/dist",static_folder="./frontend/dist")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todos.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-
+auth = HTTPTokenAuth(scheme='Token')
 CORS(app)
+
+tokens = {
+    "1234": "web",
+    "5678": "testing"
+}
 
 class ToDoObject(db.Model):
     __tablename__ = "todos"
@@ -36,7 +42,19 @@ def parent_locked(todo):
 
     return parent_lock
 
+@auth.verify_token
+def verify_token(token):
+    if token in tokens:
+        g.current_user = tokens[token]
+        return True
+    return False
+
+@app.route('/')
+def index():
+   return render_template("index.html")
+
 @app.route("/add",methods=["POST"])
+@auth.login_required
 def addTodo():
     obj = json.loads(request.data)
 
@@ -51,6 +69,7 @@ def addTodo():
     return (str(todo.id),200)
 
 @app.route("/get",methods=["GET"])
+@auth.login_required
 def getTodo():
     return (json.dumps(
         ToDoObject.query
@@ -60,6 +79,7 @@ def getTodo():
         ,200)
 
 @app.route("/set/<int:id>",methods=["POST"])
+@auth.login_required
 def setTodo(id=None):
     obj = json.loads(request.data)
     todo = ToDoObject.query.get(id)
@@ -82,6 +102,7 @@ def setTodo(id=None):
 
 
 @app.route("/del/<int:id>",methods=["POST"])
+@auth.login_required
 def delTodo(id=None):
     todo = ToDoObject.query.get(id)
 

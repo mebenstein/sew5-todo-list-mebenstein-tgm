@@ -5,7 +5,8 @@
         <Todo :todo="o" :parent_container="todos" :master_lock="false"/>
       </div>
     </div>
-    <div @click="add" class="todo" style="text-align:center">
+    <h1 v-if="error">Error backend not available</h1>
+    <div v-else @click="add" id="add" class="todo" style="text-align:center">
       <b>+</b>
     </div>
   </div>
@@ -14,7 +15,7 @@
 <script>
 import Todo from './components/Todo.vue'
 const axios = require('axios');
-
+axios.defaults.headers.common['Authorization'] = 'Token 1234';
 export default {
   name: 'app',
   components: {
@@ -22,7 +23,8 @@ export default {
   },
   data(){
     return{
-      todos:[]
+      todos:[],
+      error:true
     }
   },
   methods:{
@@ -36,7 +38,8 @@ export default {
   },
   mounted(){
     axios.get("http://localhost:9000/get").then(response => {
-      this.todos = response.data;
+      this.todos = response.data;     
+      this.error = false;
     })
   }
 }

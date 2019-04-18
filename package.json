@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/TGM-HIT/sew5-todo-list-mebenstein-tgm#readme",
   "devDependencies": {
+    "cypress": "^3.2.0",
+    "mocha": "^6.1.3",
+    "mochawesome": "^3.1.2",
     "vue": "^2.6.10"
   },
   "dependencies": {
