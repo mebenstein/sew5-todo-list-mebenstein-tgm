@@ -4,8 +4,14 @@ matrix:
       sudo: false
       python:
           - "3.6"
+      node_js: "0.10"
+      install: "npm install"
       install: pip install tox-travis
-      script: tox
+      script: 
+        - cd frontend
+        - npm run build
+        - cd ../
+        - tox
     - language: node_js
       node_js:
         - 10
@@ -23,4 +29,4 @@ matrix:
         - npm run build
         - cd ../
         - python server.py &
-        - $(npm bin)/cypress run --record
+        - $(npm bin)/cypress run 
