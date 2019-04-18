@@ -5,7 +5,7 @@
         <Todo :todo="o" :parent_container="todos" :master_lock="false"/>
       </div>
     </div>
-    <h1 v-if="error">Error backend not available</h1>
+    <h3 v-if="error">Error backend not available</h3>
     <div v-else @click="add" id="add" class="todo" style="text-align:center">
       <b>+</b>
     </div>

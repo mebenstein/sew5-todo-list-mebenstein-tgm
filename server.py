@@ -4,7 +4,7 @@ import json
 from flask_cors import CORS
 from flask_httpauth import HTTPTokenAuth
 
-app = Flask(__name__,template_folder="./frontend/dist",static_folder="./frontend/dist")
+app = Flask(__name__,static_folder="./frontend/dist/static",template_folder="./frontend/dist")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todos.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
