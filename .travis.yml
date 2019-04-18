@@ -4,8 +4,6 @@ python:
 node_js:
     - 8.12
 install:
-  - npm install
-  - npm ci
   - pip install tox-travis
 cache:
 # Caches $HOME/.npm when npm ci is default script command
