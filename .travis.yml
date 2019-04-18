@@ -18,14 +18,17 @@ directories:
 jobs:
   include:
     - stage: vue build
+      language: node_js
       script: 
         - cd frontend
         - npm run build
         - cd ../
     - stage: test backend
+      language: python
       script:
         - tox
     - stage: test frontend
+      language: python
       script:
         - python server.py &
         - $(npm bin)/cypress run 
